@@ -1,0 +1,2 @@
+# PIP Package dependencies
+pytest==7.4.4
