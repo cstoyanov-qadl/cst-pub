@@ -8,8 +8,6 @@ There are two main formulas:
 import logging
 import sys
 
-from typing import List
-
 from objects import Clause
 from objects import Formule
 from objects import Litteral
@@ -69,8 +67,8 @@ def cell1() -> Formule:
     for line_id in range(GRID_SIZE):
         for col_id in range(GRID_SIZE):
             clauses = Clause(
-                [Litteral(True, line_id, col_id, value)
-                 for value in range(1, GRID_SIZE + 1)])
+                [Litteral(True, line_id, col_id, value) for value in range(1, GRID_SIZE + 1)]
+            )
             formule.append(clauses)
     return Formule(formule)
 
@@ -112,7 +110,7 @@ def col1() -> Formule:
 
 def col2() -> Formule:
     """Returns the formula corresponding to the rule C2
-    
+
     C2: toute colonne de 𝐹 contient au plus une fois chacun des chiffres 1 à 9
 
     """
@@ -124,7 +122,7 @@ def col2() -> Formule:
                     if line_id_1 <= line_id_2:
                         continue
                     lit1 = Litteral(False, line_id_1, col_id, value)
-                    lit2 = Litteral(False, line_id_2 ,col_id, value)
+                    lit2 = Litteral(False, line_id_2, col_id, value)
                     formule.append(Clause([lit1, lit2]))
     return Formule(formule)
 
@@ -138,8 +136,7 @@ def line1() -> Formule:
     formule = []
     for line_id in range(GRID_SIZE):
         for value in range(1, GRID_SIZE + 1):
-            clause = [Litteral(True, line_id, col_id, value)
-                      for col_id in range(GRID_SIZE)]
+            clause = [Litteral(True, line_id, col_id, value) for col_id in range(GRID_SIZE)]
             formule.append(Clause(clause))
     return Formule(formule)
 
@@ -164,9 +161,7 @@ def line2() -> Formule:
 
 
 def generate_rule_formule() -> Formule:
-    """Return the full formula defined by the rules of the Suduko
-
-    """
+    """Return the full formula defined by the rules of the Suduko"""
     # Generate the formule from the rule of the game
     rules_functions = {
         "K1": cell1,
@@ -186,7 +181,7 @@ def generate_rule_formule() -> Formule:
     return formule
 
 
-def generate_data_formula(grid: List[List[int]]) -> Formule:
+def generate_data_formula(grid: list[list[int]]) -> Formule:
     """Generate the formula from the datas contained in the grid to solve
 
     Args:
@@ -202,20 +197,22 @@ def generate_data_formula(grid: List[List[int]]) -> Formule:
             if grid[line_id][col_id] == 0:
                 continue
             value = grid[line_id][col_id]
-            clauses = [Clause([Litteral(True, line_id, col_id, value)])] + \
-                [Clause([Litteral(False, line_id, col_id, val)])
-                    for val in range(1, GRID_SIZE + 1) if val != value]
+            clauses = [Clause([Litteral(True, line_id, col_id, value)])] + [
+                Clause([Litteral(False, line_id, col_id, val)])
+                for val in range(1, GRID_SIZE + 1)
+                if val != value
+            ]
             formule = formule + clauses
     return Formule(formule)
 
 
-def forbidden_ij(grid: List[List[int]], line_id: int, col_id: int) -> Formule:
+def forbidden_ij(grid: list[list[int]], line_id: int, col_id: int) -> Formule:
     """Return the formula of the forbidden values for a given cell
 
     Args:
         grid (list of list): modelized suduko grid
-        i (int): index of the cell line
-        j (int): index of the cell column
+        line_id (int): index of the cell line
+        col_id (int): index of the cell column
 
     Returns:
         Formula corresponding to the forbidden values of the cell
@@ -232,28 +229,25 @@ def forbidden_ij(grid: List[List[int]], line_id: int, col_id: int) -> Formule:
         # in the other cells of the block
         if grid[i][j] != 0:
             lit = Litteral(False, line_id, col_id, grid[i][j])
-            clause = Clause([lit])
-            if clause not in formule:
+            if Clause([lit]) not in formule:
                 formule += [Clause([lit])]
     # Col forbidden litterals
     for i in range(GRID_SIZE):
         if grid[i][col_id] != 0:
             lit = Litteral(False, line_id, col_id, grid[i][col_id])
-            clause = Clause([lit])
-            if clause not in formule:
+            if Clause([lit]) not in formule:
                 formule += [Clause([lit])]
     # Line forbidden litterals
     for j in range(GRID_SIZE):
         if grid[line_id][j] != 0:
             lit = Litteral(False, line_id, col_id, grid[line_id][j])
-            clause = Clause([lit])
-            if clause not in formule:
+            if Clause([lit]) not in formule:
                 formule += [Clause([lit])]
 
     return Formule(formule)
 
 
-def generate_forbidden_formula(grid: List[List[int]]) -> Formule:
+def generate_forbidden_formula(grid: list[list[int]]) -> Formule:
     """Generate the formula of forbidden values of all the cells
 
     Args:
@@ -272,7 +266,7 @@ def generate_forbidden_formula(grid: List[List[int]]) -> Formule:
     return Formule(formule)
 
 
-def generate_grid_formula(grid: List[List[int]]) -> Formule:
+def generate_grid_formula(grid: list[list[int]]) -> Formule:
     """Generate the formula obtained from the suduko grid to solve
 
     Note:
@@ -291,7 +285,7 @@ def generate_grid_formula(grid: List[List[int]]) -> Formule:
     return Formule(formula_data.clauses + formula_forbidden.clauses)
 
 
-def generate_initial_formula(grid: List[List[int]]) -> Formule:
+def generate_initial_formula(grid: list[list[int]]) -> Formule:
     """Generate the formula to solve (from the rules and the grid to solve)
 
     Args:
