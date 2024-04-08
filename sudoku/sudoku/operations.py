@@ -6,15 +6,13 @@ The implementation is inspired from the concours Centrale/Supelec
     https://www.concours-centrale-supelec.fr/CentraleSupelec/2014/MP/sujets/2012-013.pdf
 
 """
-from typing import List
-from typing import Tuple
 
 
-def contains(element: object, container: List[object]) -> bool:
+def contains(element: object, container: list[object]) -> bool:
     """Is an element in the container
 
     Args:
-        element:
+        element: object to compare into the object list
         container: list of elements
 
     Returns:
@@ -24,39 +22,31 @@ def contains(element: object, container: List[object]) -> bool:
     return element in container
 
 
-def delete(element: object, container: List[object]) -> None:
+def delete(element: object, container: list[object]) -> None:
     """Delete of the items equal to element in the container
 
     Args:
-        element:
+        element: object to compare into the object list
         container: list of elements
-
-    Returns:
-        the list with not more items equal to element
     """
     while contains(element, container):
         container.remove(element)
 
 
-def add(element: object, container: List[object]) -> None:
+def add(element: object, container: list[object]) -> None:
     """Add an element in a container if it does not exist in the container
 
     Args:
-        element:
+        element: object to compare into the object list
         container: list of elements
-
-    Returns:
-        the list with the added element, the original list if the element was already present
 
     """
     if not contains(element, container):
         container.append(element)
 
 
-def index(block_id: int, element_id: int) -> Tuple[int, int]:
-    """Convert the position of a cell from a block/element_block format to raw/col format
-
-    """
+def index(block_id: int, element_id: int) -> tuple[int, int]:
+    """Convert the position of a cell from a block/element_block format to raw/col format"""
     if block_id not in range(0, 9):
         raise ValueError("block_id value is not between 0 and 9")
     if element_id not in range(0, 9):

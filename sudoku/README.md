@@ -73,6 +73,13 @@ The solver can be selected by using:
 	./sudoku-solver -g <list of paths to the grids, comma separated>
 
 
+## Developers
+
+### Execute the tests
+
+The tests can be run with the following command:
+
+	./run_tests.sh
 
 
 # TODO list

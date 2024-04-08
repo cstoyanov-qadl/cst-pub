@@ -26,22 +26,26 @@ LOGGER = logging.getLogger()
 
 def sudoku_parser():
     """Manage the argument of the command"""
-    parser = argparse.ArgumentParser(
-        prog="Suduko Solver", description="Solve sudoku grid(s)"
-    )
+    parser = argparse.ArgumentParser(prog="Suduko Solver", description="Solve sudoku grid(s)")
     parser.add_argument(
-        "-g", "--grids",
-        type=str, required=True,
+        "-g",
+        "--grids",
+        type=str,
+        required=True,
         help="Path to the description files of the suduko",
     )
     parser.add_argument(
-        "-l", "--solver-list",
+        "-l",
+        "--solver-list",
         action="store_true",
         help="List the available solvers",
     )
     parser.add_argument(
-        "-s", "--solver-name",
-        type=str, required=False, default="unitary-propagation",
+        "-s",
+        "--solver-name",
+        type=str,
+        required=False,
+        default="unitary-propagation",
         help="Select the solver to use",
     )
 
@@ -50,15 +54,15 @@ def sudoku_parser():
 
 def process_parser(parser):
     """Process and validate the arguments provided by the user"""
-    args = parser.parse_args()
+    pr_args = parser.parse_args()
 
-    if args.solver_list:
-        return args
+    if pr_args.solver_list:
+        return pr_args
 
-    args.grids = [Path(filepath) for filepath in args.grids.split(",")]
+    pr_args.grids = [Path(filepath) for filepath in pr_args.grids.split(",")]
 
-    LOGGER.debug("CLI arguments: %s", args)
-    return args
+    LOGGER.debug("CLI arguments: %s", pr_args)
+    return pr_args
 
 
 def load_grid(filepath):
@@ -81,9 +85,7 @@ def validate_grid(grid):
     for i in range(GRID_SIZE):
         for j in range(GRID_SIZE):
             if not 0 <= grid[i][j] <= 9 or not 0 <= grid[i][j] <= 9:
-                raise ValueError(
-                    "The value of ({},{}) is not in the value range ({})".format(
-                        i, j, grid[i][j]))
+                raise ValueError(f"The value of ({i},{j}) is not in the value range ({grid[i][j]})")
 
 
 def print_grid(grid):
@@ -101,7 +103,7 @@ if __name__ == "__main__":
     if args.solver_list:
         LOGGER.info("The following solvers are available:")
         for element in Solver.available_solvers():
-            print("\t- %s" % element)
+            print(f"\t- {element}")
         sys.exit(RC_OK)
 
     RETURN_CODE = 0
@@ -110,22 +112,22 @@ if __name__ == "__main__":
         LOGGER.info("solve the grid: '%s'", str_grid)
 
         try:
-            grid = load_grid(str_grid)
+            obj_grid = load_grid(str_grid)
         except ValueError as err:
             print("The grid '%s' is not valid: %s", str_grid, str(err))
             sys.exit(RC_INVALID_GRID_VALUE)
 
         try:
-            validate_grid(grid)
+            validate_grid(obj_grid)
         except ValueError as err:
             print("The grid '%s' is not valid: %s", str_grid, str(err))
             sys.exit(RC_INVALID_GRID_SIZE)
 
-        grids.append(grid)
-        print_grid(grid)
+        grids.append(obj_grid)
+        print_grid(obj_grid)
 
         solver = Solver(args.solver_name)
-        solver.solve(grid)
-        print_grid(grid)
+        solver.solve(obj_grid)
+        print_grid(obj_grid)
 
     sys.exit(RETURN_CODE)
