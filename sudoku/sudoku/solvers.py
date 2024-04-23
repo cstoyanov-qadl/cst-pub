@@ -99,22 +99,19 @@ def propagate2(grid: list[list[int]], formule: Formule) -> None:
     if not formule:
         return
 
-    while len(formule):
-        un_vars = variables(formule)
-        for litteral in un_vars:
-            is_infr_litteral = deduce(grid, litteral, formule)
-            if is_infr_litteral == 0:
-                pass
-            elif is_infr_litteral == 1:
-                formule = formule + Formule([Clause([litteral])])
-                propagate(grid, formule)
-            elif is_infr_litteral == -1:
-                formule = formule + Formule([Clause([~litteral])])
-                propagate(grid, formule)
-            else:
-                raise ValueError("unexpected case")
-
-        break
+    un_vars = variables(formule)
+    for litteral in un_vars:
+        is_infr_litteral = deduce(grid, litteral, formule)
+        if is_infr_litteral == 0:
+            pass
+        elif is_infr_litteral == 1:
+            formule = formule + Formule([Clause([litteral])])
+            propagate(grid, formule)
+        elif is_infr_litteral == -1:
+            formule = formule + Formule([Clause([~litteral])])
+            propagate(grid, formule)
+        else:
+            raise ValueError("unexpected case")
 
 
 class Solver:
