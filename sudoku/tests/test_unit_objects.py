@@ -1,7 +1,7 @@
 
 import pytest
 
-import objects
+from sudoku import objects
 
 TESTCASE_LITTERAL_CREATION = [
     ("valid corner 1", (True, 0, 0, 1)),
@@ -29,12 +29,17 @@ TESTCASE_LITTERAL_CREATION_ERROR = [
 ]
 
 
-@pytest.fixture(params=TESTCASE_LITTERAL_CREATION)
+def displayer_unit_objects(param):
+    """Display method for the module fixture"""
+    return param[0]
+
+
+@pytest.fixture(params=TESTCASE_LITTERAL_CREATION, ids=displayer_unit_objects)
 def tc_litteral_creation(request):
     return request.param[1]
 
 
-@pytest.fixture(params=TESTCASE_LITTERAL_CREATION_ERROR)
+@pytest.fixture(params=TESTCASE_LITTERAL_CREATION_ERROR, ids=displayer_unit_objects)
 def tc_litteral_creation_error(request):
     return request.param[1]
 
