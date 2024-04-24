@@ -97,7 +97,13 @@ def print_grid(grid):
     print("=" * (2 * GRID_SIZE + 1))
 
 
-if __name__ == "__main__":
+def main():
+    """Execution layer - entry point function
+
+    Returns:
+        return code (int)
+
+    """
     args = process_parser(sudoku_parser())
 
     if args.solver_list:
@@ -106,7 +112,7 @@ if __name__ == "__main__":
             print(f"\t- {element}")
         sys.exit(RC_OK)
 
-    RETURN_CODE = 0
+    return_code = RC_OK
     grids = []
     for str_grid in args.grids:
         LOGGER.info("solve the grid: '%s'", str_grid)
@@ -115,13 +121,13 @@ if __name__ == "__main__":
             obj_grid = load_grid(str_grid)
         except ValueError as err:
             print("The grid '%s' is not valid: %s", str_grid, str(err))
-            sys.exit(RC_INVALID_GRID_VALUE)
+            return RC_INVALID_GRID_VALUE
 
         try:
             validate_grid(obj_grid)
         except ValueError as err:
             print("The grid '%s' is not valid: %s", str_grid, str(err))
-            sys.exit(RC_INVALID_GRID_SIZE)
+            return RC_INVALID_GRID_SIZE
 
         grids.append(obj_grid)
         print_grid(obj_grid)
@@ -130,4 +136,8 @@ if __name__ == "__main__":
         solver.solve(obj_grid)
         print_grid(obj_grid)
 
-    sys.exit(RETURN_CODE)
+    return return_code
+
+
+if __name__ == "__main__":
+    sys.exit(main())
