@@ -5,9 +5,9 @@ from itertools import chain
 
 import pytest
 
-import solvers
-from dataset import ALL_SUDOKUS, ALL_SUDOKUS_SOLVED
-from formulas import generate_initial_formula
+from sudoku import solvers
+from sudoku.dataset import ALL_SUDOKUS, ALL_SUDOKUS_SOLVED
+from sudoku.formulas import generate_initial_formula
 
 
 LEVEL_SOLVERS = [
@@ -24,7 +24,12 @@ LEVEL_SOLVERS = [
     ("unfructuous-litteral", "master", True)]
 
 
-@pytest.fixture(params=LEVEL_SOLVERS)
+def displayer_component_solves(param):
+    """Displaying method for the testcase fixture"""
+    return '-'.join([param[0], param[1]])
+
+
+@pytest.fixture(params=LEVEL_SOLVERS, ids=displayer_component_solves)
 def level_solver(request):
     return request.param
 

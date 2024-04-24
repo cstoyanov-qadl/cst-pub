@@ -3,7 +3,7 @@
 """
 import pytest
 
-from operations import index
+from sudoku.operations import index
 
 
 # INDEX TESTCASES STRUCTURE:
@@ -27,13 +27,17 @@ INDEX_ERROR_TESTCASES = [
 ]
 
 
-@pytest.fixture(params=INDEX_TESTCASES)
+def displayer_unit_operations(param):
+    return param[0]
+
+
+@pytest.fixture(params=INDEX_TESTCASES, ids=displayer_unit_operations)
 def vector_index(request):
     """Provide nominal testcases for the function index() """
     return request.param
 
 
-@pytest.fixture(params=INDEX_ERROR_TESTCASES)
+@pytest.fixture(params=INDEX_ERROR_TESTCASES, ids=displayer_unit_operations)
 def error_vector_index(request):
     """Provide error testcases for the function index() """
     return request.param

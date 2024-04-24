@@ -98,7 +98,7 @@ load-plugins=
 persistent=yes
 
 # Minimum supported python version
-py-version=3.4.0
+py-version=3.9.0
 
 # Discover python modules and packages in the file system subtree.
 recursive=no

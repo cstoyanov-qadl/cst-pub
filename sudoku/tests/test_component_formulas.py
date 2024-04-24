@@ -3,9 +3,8 @@
 """
 import pytest
 
-import formulas
-from dataset import ALL_SUDOKUS
-
+from sudoku import formulas
+from sudoku.dataset import ALL_SUDOKUS
 
 
 class TestFormulas:
