@@ -8,10 +8,10 @@ There are two main formulas:
 import logging
 import sys
 
-from objects import Clause
-from objects import Formule
-from objects import Litteral
-from operations import index
+from .objects import Clause
+from .objects import Formule
+from .objects import Litteral
+from .operations import index
 
 sys.setrecursionlimit(15000)
 

@@ -12,7 +12,7 @@ import sys
 
 from pathlib import Path
 
-from solvers import Solver
+from .solvers import Solver
 
 
 GRID_SIZE = 9

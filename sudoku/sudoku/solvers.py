@@ -5,10 +5,10 @@ import copy
 
 from itertools import chain
 
-from formulas import generate_initial_formula
-from objects import Clause
-from objects import Formule
-from objects import Litteral
+from .formulas import generate_initial_formula
+from .objects import Clause
+from .objects import Formule
+from .objects import Litteral
 
 
 class EmptyClause(BaseException):
