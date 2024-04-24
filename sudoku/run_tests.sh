@@ -54,13 +54,11 @@ fi
 
 # PYTEST PART
 echo "Execute the full testsuite"
-${PYTHON_BIN} -m pytest -v tests/
-rtcode=$?
-echo "rcode: ${rtcode}"
+${PYTHON_BIN} -m pytest -vv tests/
+tt_pytest_errors=$?
 
-
-sa_total_error=$((${sa_black_error} + ${sa_pylint_error}))
-if [ sa_total_error -ne 0 ]; then
+sa_total_error=$(($sa_black_error + $sa_pylint_error + $tt_pytest_errors))
+if [ $sa_total_error -ne 0 ]; then
     echo "TEST FAILED"
     exit 1
 fi
